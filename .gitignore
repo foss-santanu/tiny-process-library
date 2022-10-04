@@ -46,5 +46,6 @@ io_test
 
 # Commonly used build directory
 build
+install
 
 io_test_stdout.txt

@@ -7,7 +7,13 @@ if(CMAKE_SOURCE_DIR STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 else()
   option(BUILD_TESTING "set ON to build library tests" OFF)
 endif()
+# Option to determine if add_library build a shared or static  library
+option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 
+# set statement should be here (**)
+if(WIN32)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
 add_library(tiny-process-library process.cpp)
 add_library(tiny-process-library::tiny-process-library ALIAS tiny-process-library)
 
@@ -18,7 +24,13 @@ else()
 endif()
 
 if(WIN32)
-  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+  #set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON) -- does not work here
+  # Instead the below if block should be used or set statement moved above @(**)
+  if(BUILD_SHARED_LIBS)
+    # Detail discussion on ImportLibrary issue is here:
+    # https://github.com/libressl-portable/portable/issues/223
+    #set_target_properties(tiny-process-library PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS true)
+  endif()
   target_sources(tiny-process-library PRIVATE process_win.cpp)
   #If compiled using MSYS2, use sh to run commands
   if(MSYS)

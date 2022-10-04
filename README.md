@@ -40,3 +40,31 @@ cmake -G"MSYS Makefiles" ..
 make
 ./examples
 ```
+
+#### Windows with MSVC installed
+```sh
+git clone http://gitlab.com/eidheim/tiny-process-library
+cd tiny-process-library
+mkdir build
+cd build
+cmake ..
+
+To build a shared library run instead the command below
+cmake -DBUILD_SHARED_LIBS=ON ..
+
+To build with Debug config run the command below:
+cmake --build .
+
+But to build for release run the command below:
+cmake --build . --config Release
+
+cd to Debug or Release folder and run examples.exe.
+
+Ensure that tiny-process-library/install directory exists,
+and it contains two folders - 'shared' for shared library and 'static' for static library.
+Then run the commands below to get the usable library:
+for shared library -
+cmake --install . --prefix ../install/shared
+for static library -
+cmake --install . --prefix ../install/static
+```
